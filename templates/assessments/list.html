@@ -23,7 +23,6 @@
                     <th>Bug Tracking</th>
                     <th>SAST</th>
                     <th>SCA</th>
-                    <th>Risk Profile</th>
                     <th>Status</th>
                     <th>Creator</th>
                     <th class="text-right">Actions</th>
@@ -40,7 +39,6 @@
                             <td>{{ assessment.bugtracking }}</td>
                             <td>{{ assessment.sast }}</td>
                             <td>{{ assessment.sca }}</td>
-                            <td>{{ assessment.riskprof_category }} - {{ assessment.riskprof_score }}</td>
                             <td>{{ render_assessment_status_pill(assessment.status) }}</td>
                             <td>{{ assessment.creator.name }}</td>
                             <td>
@@ -87,13 +85,12 @@
                     name: tds[0].firstElementChild.innerText,
                     application: tds[1].textContent,
                     bugtracking: tds[2].textContent,
-                    riskprof: tds[5].textContent,
                     creator_name: tds[7].textContent
                 };
             }
 
             function search(tds, re) {
-                return re.test(tds.name) || re.test(tds.application) || re.test(tds.bugtracking) || re.test(tds.creator_name) || re.test(tds.riskprof);
+                return re.test(tds.name) || re.test(tds.application) || re.test(tds.bugtracking) || re.test(tds.creator_name);
             }
 
             let trs = document.getElementById("table_data").getElementsByTagName("tr");
