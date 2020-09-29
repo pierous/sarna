@@ -8,7 +8,7 @@ from sqlathanor import AttributeConfiguration
 from sarna.core.config import config
 from sarna.model.base import Base, db, supported_serialization
 from sarna.model.client import Client
-from sarna.model.enums import Language, AssessmentType, AssessmentStatus, Score, FindingStatus
+from sarna.model.enums import Language, AssessmentType, AssessmentStatus, Score, FindingStatus, RiskProfileType, AnalysisResultType
 from sarna.model.sql_types import Enum, GUID
 
 __all__ = ['Assessment', 'Image', 'auditor_approval', 'assessment_audit']
@@ -61,15 +61,27 @@ class Assessment(Base, db.Model):
         AttributeConfiguration(name='status', **supported_serialization),
         AttributeConfiguration(name='client', **supported_serialization),
         AttributeConfiguration(name='findings', **supported_serialization),
+        AttributeConfiguration(name='application', **supported_serialization),
+        AttributeConfiguration(name='bugtracking', **supported_serialization),
+        AttributeConfiguration(name='riskprof_category', **supported_serialization),
+        AttributeConfiguration(name='riskprof_score', **supported_serialization),
+        AttributeConfiguration(name='sca', **supported_serialization),
+        AttributeConfiguration(name='sast', **supported_serialization),
     ]
 
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(GUID, default=uuid4, unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)
-    platform = db.Column(db.String(64), nullable=False)
+    platform = db.Column(db.String(64))
     lang = db.Column(Enum(Language), nullable=False)
     type = db.Column(Enum(AssessmentType), nullable=False)
     status = db.Column(Enum(AssessmentStatus), nullable=False)
+    application = db.Column(db.String(64), nullable=False)
+    bugtracking = db.Column(db.String(64), nullable=True)
+    riskprof_category = db.Column(Enum(RiskProfileType), nullable=False)
+    riskprof_score = db.Column(db.Float)
+    sast = db.Column(Enum(AnalysisResultType), nullable=False)
+    sca = db.Column(Enum(AnalysisResultType), nullable=False)
 
     client_id = db.Column(
         db.Integer,

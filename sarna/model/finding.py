@@ -77,11 +77,11 @@ class Finding(Base, db.Model):
     description = db.Column(db.String())
     solution = db.Column(db.String())
 
-    tech_risk = db.Column(Enum(Score), nullable=False)
-    business_risk = db.Column(Enum(Score), nullable=False)
-    exploitability = db.Column(Enum(Score), nullable=False)
-    dissemination = db.Column(Enum(Score), nullable=False)
-    solution_complexity = db.Column(Enum(Score), nullable=False)
+    tech_risk = db.Column(Enum(Score))
+    business_risk = db.Column(Enum(Score))
+    exploitability = db.Column(Enum(Score))
+    dissemination = db.Column(Enum(Score))
+    solution_complexity = db.Column(Enum(Score))
 
     definition = db.Column(db.String(), nullable=False)
     references = db.Column(db.String(), nullable=False)
@@ -186,6 +186,9 @@ class Finding(Base, db.Model):
     @property
     def client_finding_code(self):
         return self.assessment.client.format_finding_code(self)
+    
+    asvs = db.Column(db.String(8))
+    masvs = db.Column(db.String(8))
 
     @classmethod
     def build_from_template(cls, template: FindingTemplate, assessment: Assessment):
