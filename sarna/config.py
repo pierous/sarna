@@ -52,19 +52,21 @@ class BaseConfig:
     AD_GROUP_ATTR = 'memberOf'
 
     # Enable Federated authentication, you must complete the attributes below
-    SAML_AUTH = False
+    SAML_AUTH = os.getenv('SAML_AUTH')
     # Identity Provider URL
-    SAML_IDP_EID = None
+    SAML_IDP_EID = os.getenv('SAML_IDP_EID')
     # Identity provider's SSO Url
-    SAML_IDP_SSO = None
+    SAML_IDP_SSO = os.getenv('SAML_IDP_SSO')
     # Identity provider's SLO Url
-    SAML_IDP_SLO = None
+    SAML_IDP_SLO = os.getenv('SAML_IDP_SLO')
     # IDP's certificate path
-    SAML_IDP_CERT = None
+    SAML_IDP_CERT = os.getenv('SAML_IDP_CERT')
     # SP's certificate path
-    SAML_SP_CERT = None
+    SAML_SP_CERT = os.getenv('SAML_SP_CERT')
     # SP's private key path
-    SAML_SP_PK = None
+    SAML_SP_PK = os.getenv('SAML_SP_PK')
+    # SP server name
+    SERVER_NAME = os.getenv('SERVER_NAME')
 
     # User session timeout in seconds.
     PERMANENT_SESSION_LIFETIME = 604800

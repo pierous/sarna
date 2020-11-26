@@ -6,14 +6,6 @@ from sarna.config import BaseConfig
 from sarna.core.auth_engine.auth_controller import AuthController
 from sarna.core.auth_engine.exceptions import UserNotFoundException
 
-def getCertificate(path):
-    CERTIFICATE = path
-    return certificate_from_file(CERTIFICATE)
-
-def getPrivateKey(path):
-    PRIVATE_KEY = path
-    return private_key_from_file(PRIVATE_KEY)
-
 def getLoginUrl():
     return url_for('flask_saml2_sp.login')
 
@@ -51,7 +43,7 @@ class MyServiceProvider(ServiceProvider):
         return ServiceProvider.login_successful(self, auth_data, relay_state)
 
 if BaseConfig.SAML_AUTH:
-    
+
     def checkParam(param):
         if not param:
            raise AttributeError("There are errors in the SAML config attibutes.")
@@ -61,17 +53,18 @@ if BaseConfig.SAML_AUTH:
         BaseConfig.SAML_IDP_SSO,
         BaseConfig.SAML_IDP_SLO,
         BaseConfig.SAML_SP_CERT,
-        BaseConfig.SAML_SP_PK]
+        BaseConfig.SAML_SP_PK,
+        BaseConfig.SERVER_NAME]
     
     for param in params:
         checkParam(param)
 
     sp = MyServiceProvider(app)
 
-    app.config['SERVER_NAME'] = 'localhost:5000'
+    app.config['SERVER_NAME'] = BaseConfig.SERVER_NAME
     app.config['SAML2_SP'] = {
-        'certificate': getCertificate(BaseConfig.SAML_SP_CERT),
-        'private_key': getPrivateKey(BaseConfig.SAML_SP_PK),
+        'certificate': certificate_from_file(BaseConfig.SAML_SP_CERT),
+        'private_key': private_key_from_file(BaseConfig.SAML_SP_PK),
     }
 
     app.config['SAML2_IDENTITY_PROVIDERS'] = [
@@ -82,7 +75,7 @@ if BaseConfig.SAML_AUTH:
                 'entity_id': BaseConfig.SAML_IDP_EID,
                 'sso_url': BaseConfig.SAML_IDP_SSO,
                 'slo_url': BaseConfig.SAML_IDP_SLO,
-                'certificate': getCertificate(BaseConfig.SAML_IDP_CERT),
+                'certificate': certificate_from_file(BaseConfig.SAML_IDP_CERT),
             },
         },
     ]
